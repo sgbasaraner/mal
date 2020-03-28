@@ -1,10 +1,13 @@
-use std::io::{self, BufRead, Write};
+extern crate linefeed;
+
+use linefeed::{Interface, ReadResult};
 
 fn main() {
-    loop {
-        print!("user> ");
-        io::stdout().flush();
-        let input = io::stdin().lock().lines().next().unwrap().unwrap();
+    let reader = Interface::new("rust-mal").expect("Couldn't initialize reader.");
+
+    reader.set_prompt("user> ").expect("Couldn't set reader prompt.");
+
+    while let ReadResult::Input(input) = reader.read_line().expect("Couldn't read line.") {
         println!("{}", rep(input));
     }
 }
