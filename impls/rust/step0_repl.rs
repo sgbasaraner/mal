@@ -8,7 +8,10 @@ fn main() {
     reader.set_prompt("user> ").expect("Couldn't set reader prompt.");
 
     while let ReadResult::Input(input) = reader.read_line().expect("Couldn't read line.") {
-        println!("{}", rep(input));
+        println!("{}", rep(input.clone()));
+        if !input.trim().is_empty() {
+            reader.add_history(input);
+        }
     }
 }
 
